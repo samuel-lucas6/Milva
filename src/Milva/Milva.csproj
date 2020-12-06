@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <Platforms>AnyCPU;x64</Platforms>
+    <AssemblyName>milva</AssemblyName>
+    <PackageLicenseExpression>GPLv3</PackageLicenseExpression>
+    <Authors>Samuel Lucas</Authors>
+    <Description>A simple, cross-platform command line tool for hashing files.
+</Description>
+    <Copyright>Copyright © 2020 Samuel Lucas</Copyright>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <ApplicationIcon>Milva.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="McMaster.Extensions.CommandLineUtils" Version="3.0.0" />
+    <PackageReference Include="Sodium.Core" Version="1.2.3" />
+  </ItemGroup>
+
+</Project>
