@@ -5,6 +5,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 
-// Less readable
+// False positive
 [assembly: SuppressMessage("CodeQuality", "IDE0051:Remove unused private members", Justification = "<Pending>", Scope = "member", Target = "~M:Milva.Program.OnExecute")]
+
+// Less readable
 [assembly: SuppressMessage("Style", "IDE0057:Use range operator", Justification = "<Pending>", Scope = "member", Target = "~M:Milva.CommandLine.DisplayAbout")]

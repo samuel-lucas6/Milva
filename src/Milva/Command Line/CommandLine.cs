@@ -2,7 +2,7 @@
 using System.IO;
 using System.Reflection;
 
-/*  
+/*
     Milva: A simple, cross-platform command line tool for hashing files.
     Copyright(C) 2020 Samuel Lucas
 
@@ -13,7 +13,7 @@ using System.Reflection;
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -26,44 +26,33 @@ namespace Milva
     {
         public static void HashEachFile(string[] filePaths, Program.HashFunction hashFunction)
         {
-            CheckNull.Arguments(filePaths);
-            foreach (string filePath in filePaths)
+            if (filePaths != null)
             {
-                if (File.Exists(filePath))
+                foreach (string filePath in filePaths)
                 {
-                    byte[] hash = GetFileHash(hashFunction, filePath);
-                    if (hash != null)
+                    if (File.Exists(filePath))
                     {
-                        DisplayHash(filePath, hash);
+                        byte[] hash = FileHandling.HashFile(filePath, hashFunction);
+                        if (hash != null)
+                        {
+                            DisplayHash(filePath, hash);
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{Path.GetFileName(filePath)} - Error: The specified file doesn't exist.");
                     }
                 }
-                else
-                {
-                    Console.WriteLine("Error: The specified file doesn't exist.");
-                }
             }
-        }
-
-        private static byte[] GetFileHash(Program.HashFunction hashFunction, string filePath)
-        {
-            return hashFunction switch
+            else
             {
-                Program.HashFunction.BLAKE512 => HashingAlgorithms.BLAKE2(filePath, 64),
-                Program.HashFunction.BLAKE256 => HashingAlgorithms.BLAKE2(filePath, 32),
-                Program.HashFunction.SHA512 => HashingAlgorithms.SHA512(filePath),
-                Program.HashFunction.SHA384 => HashingAlgorithms.SHA384(filePath),
-                Program.HashFunction.SHA256 => HashingAlgorithms.SHA256(filePath),
-                Program.HashFunction.SHA1 => HashingAlgorithms.SHA1(filePath),
-                Program.HashFunction.MD5 => HashingAlgorithms.MD5(filePath),
-                _ => null,
-            };
+                Console.WriteLine("Error: No file has been specified.");
+            }
         }
 
         private static void DisplayHash(string filePath, byte[] hashBytes)
         {
-            string fileName = Path.GetFileName(filePath);
-            string hashString = ConvertHash.ToString(hashBytes);
-            Console.WriteLine($"{fileName}: {hashString}");
+            Console.WriteLine($"{Path.GetFileName(filePath)}: {ConvertHash.ToString(hashBytes)}");
         }
 
         public static void DisplayAbout()

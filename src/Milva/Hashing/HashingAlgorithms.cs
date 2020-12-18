@@ -1,7 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using System.IO;
+using System.Security.Cryptography;
 using Sodium;
 
-/*  
+/*
     Milva: A simple, cross-platform command line tool for hashing files.
     Copyright(C) 2020 Samuel Lucas
 
@@ -12,7 +13,7 @@ using Sodium;
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -23,40 +24,48 @@ namespace Milva
 {
     public static class HashingAlgorithms
     {
-        public static byte[] BLAKE2(string filePath, int hashLength)
+        public static byte[] BLAKE512(FileStream fileStream)
         {
+            const int hashLength = 64;
             using var blake2 = new GenericHash.GenericHashAlgorithm(key:(byte[])null, hashLength);
-            return FileHandling.HashFile(filePath, blake2);
+            return blake2.ComputeHash(fileStream);
         }
 
-        public static byte[] SHA512(string filePath)
+        public static byte[] BLAKE256(FileStream fileStream)
+        {
+            const int hashLength = 32;
+            using var blake2 = new GenericHash.GenericHashAlgorithm(key:(byte[])null, hashLength);
+            return blake2.ComputeHash(fileStream);
+        }
+
+        public static byte[] SHA512(FileStream fileStream)
         {
             using var sha512 = new SHA512CryptoServiceProvider();
-            return FileHandling.HashFile(filePath, sha512);
+            return sha512.ComputeHash(fileStream);
         }
 
-        public static byte[] SHA384(string filePath)
+        public static byte[] SHA384(FileStream fileStream)
         {
             using var sha384 = new SHA384CryptoServiceProvider();
-            return FileHandling.HashFile(filePath, sha384);
+            return sha384.ComputeHash(fileStream);
         }
 
-        public static byte[] SHA256(string filePath)
+        public static byte[] SHA256(FileStream fileStream)
         {
             using var sha256 = new SHA256CryptoServiceProvider();
-            return FileHandling.HashFile(filePath, sha256);
+            return sha256.ComputeHash(fileStream);
         }
 
-        public static byte[] SHA1(string filePath)
+        public static byte[] SHA1(FileStream fileStream)
         {
             using var sha1 = new SHA1CryptoServiceProvider();
-            return FileHandling.HashFile(filePath, sha1);
+            return sha1.ComputeHash(fileStream);
         }
 
-        public static byte[] MD5(string filePath)
+        public static byte[] MD5(FileStream fileStream)
         {
             using var md5 = new MD5CryptoServiceProvider();
-            return FileHandling.HashFile(filePath, md5);
+            return md5.ComputeHash(fileStream);
         }
     }
 }

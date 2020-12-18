@@ -1,7 +1,7 @@
 ﻿using System;
 using McMaster.Extensions.CommandLineUtils;
 
-/*  
+/*
     Milva: A simple, cross-platform command line tool for hashing files.
     Copyright(C) 2020 Samuel Lucas
 
@@ -12,7 +12,7 @@ using McMaster.Extensions.CommandLineUtils;
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -57,7 +57,7 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
         public bool About { get; }
 
         [Argument(0)]
-        public string[] Files { get; }
+        public string[] FilePaths { get; }
 
         public enum HashFunction { BLAKE512, BLAKE256, SHA512, SHA384, SHA256, SHA1, MD5 }
 
@@ -68,31 +68,31 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
             Console.WriteLine();
             if (BLAKE512)
             {
-                CommandLine.HashEachFile(Files, HashFunction.BLAKE512);
+                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE512);
             }
             else if (BLAKE256)
             {
-                CommandLine.HashEachFile(Files, HashFunction.BLAKE256);
+                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE256);
             }
             else if (SHA512)
             {
-                CommandLine.HashEachFile(Files, HashFunction.SHA512);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA512);
             }
             else if (SHA384)
             {
-                CommandLine.HashEachFile(Files, HashFunction.SHA384);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA384);
             }
             else if (SHA256)
             {
-                CommandLine.HashEachFile(Files, HashFunction.SHA256);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA256);
             }
             else if (SHA1)
             {
-                CommandLine.HashEachFile(Files, HashFunction.SHA1);
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA1);
             }
             else if (MD5)
             {
-                CommandLine.HashEachFile(Files, HashFunction.MD5);
+                CommandLine.HashEachFile(FilePaths, HashFunction.MD5);
             }
             else if (About)
             {
