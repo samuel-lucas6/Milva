@@ -1,5 +1,6 @@
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-green.svg)](http://www.gnu.org/licenses/gpl-3.0)
 # Milva
-Milva is a simple, cross-platform command line tool for hashing files.
+A simple, cross-platform command line tool for hashing files.
 
 ## Usage
 ```
@@ -21,7 +22,7 @@ Examples:
   --sha1 [file]
   --md5 [file]
 ```
-When specifying file paths/file names that contain spaces, you must surround them with ' ' on Linux/macOS and " " on Windows.
+When specifying file paths/file names that contain spaces, you must surround them with ' ' on Linux/macOS and " " on Windows:
 ```
 $ ./milva --sha256 'Milva Logo.png'
 $ ./milva --sha256 '/home/samuel/Documents/Milva Logo.png'
