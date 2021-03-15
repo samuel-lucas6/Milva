@@ -105,7 +105,7 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
             }
             else
             {
-                Console.WriteLine("Error: Unrecognized option. Specify --help for a list of available options and commands.");
+                DisplayMessage.Error("Unrecognized option. Specify --help for a list of available options and commands.");
             }
         }
     }

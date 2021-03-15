@@ -32,7 +32,7 @@ namespace Milva
             }
             catch (Exception ex) when (ExceptionFilters.FileAccess(ex))
             {
-                Console.WriteLine($"{Path.GetFileName(filePath)} - Error: {ex.GetType()}.");
+                DisplayMessage.FilePathError(filePath, ex.GetType().ToString());
                 return null;
             }
         }

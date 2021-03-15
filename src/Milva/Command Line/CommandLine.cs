@@ -28,27 +28,24 @@ namespace Milva
         {
             if (filePaths == null)
             {
-                Console.WriteLine("Error: Please specify a file to hash.");
+                DisplayMessage.Error("Please specify a file to hash.");
                 return;
             }
             foreach (string filePath in filePaths)
             {
                 if (!File.Exists(filePath))
                 {
-                    Console.WriteLine($"{Path.GetFileName(filePath)} - Error: This file doesn't exist.");
+                    DisplayMessage.FilePathError(filePath, "This file doesn't exist.");
                     continue;
                 }
                 byte[] hash = FileHandling.HashFile(filePath, hashFunction);
-                if (hash != null)
-                {
-                    DisplayHash(filePath, hash);
-                }
+                if (hash != null) { DisplayHash(filePath, hash); }
             }
         }
 
         private static void DisplayHash(string filePath, byte[] hash)
         {
-            Console.WriteLine($"{Path.GetFileName(filePath)}: {ConvertHash.ToString(hash)}");
+            DisplayMessage.FilePathMessage(filePath, ConvertHash.ToString(hash));
         }
 
         public static void DisplayAbout()
@@ -56,7 +53,7 @@ namespace Milva
             string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             Console.WriteLine($"Milva v{assemblyVersion.Substring(0, assemblyVersion.Length - 2)}");
             Console.WriteLine("Copyright(C) 2020-2021 Samuel Lucas");
-            Console.WriteLine("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>");
+            Console.WriteLine("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.");
             Console.WriteLine("This is free software: you are free to change and redistribute it.");
             Console.WriteLine("There is NO WARRANTY, to the extent permitted by law.");
         }

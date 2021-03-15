@@ -1,4 +1,7 @@
-﻿/*
+﻿using System;
+using System.IO;
+
+/*
     Milva: A simple, cross-platform command line tool for hashing files.
     Copyright(C) 2020-2021 Samuel Lucas
 
@@ -18,15 +21,23 @@
 
 namespace Milva
 {
-    public enum HashFunction
-    { 
-        BLAKE3,
-        BLAKE2b512,
-        BLAKE2b256,
-        SHA512,
-        SHA384,
-        SHA256,
-        SHA1,
-        MD5
+    public static class DisplayMessage
+    {
+        private const string _error = "Error";
+
+        public static void Error(string errorMessage)
+        {
+            Console.WriteLine($"{_error}: {errorMessage}");
+        }
+
+        public static void FilePathError(string filePath, string message)
+        {
+            Console.WriteLine($"{Path.GetFileName(filePath)} - {_error}: {message}");
+        }
+
+        public static void FilePathMessage(string filePath, string message)
+        {
+            Console.WriteLine($"{Path.GetFileName(filePath)}: {message}");
+        }
     }
 }
