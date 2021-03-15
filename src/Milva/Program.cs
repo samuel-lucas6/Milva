@@ -3,7 +3,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright(C) 2020 Samuel Lucas
+    Copyright(C) 2020-2021 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -21,8 +21,8 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace Milva
 {
-    [HelpOption("--help", ShowInHelpText = false)]
-    [Command(ExtendedHelpText = @"  --help      show help information
+    [HelpOption("-h|--help", ShowInHelpText = false)]
+    [Command(ExtendedHelpText = @"  -h|--help     show help information
 
 Examples:
   --sha256 [file]
@@ -32,47 +32,52 @@ Examples:
 Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
     public class Program
     {
-        [Option("--blake512", "retrieve the BLAKE2-512 of a file", CommandOptionType.NoValue)]
-        public bool BLAKE512 { get; }
+        [Option("--blake3", "hash a file using BLAKE3-256", CommandOptionType.NoValue)]
+        public bool BLAKE3 { get; }
 
-        [Option("--blake256", "retrieve the BLAKE2-256 of a file", CommandOptionType.NoValue)]
-        public bool BLAKE256 { get; }
+        [Option("--blake2b512", "hash a file using BLAKE2b-512", CommandOptionType.NoValue)]
+        public bool BLAKE2b512 { get; }
 
-        [Option("--sha512", "retrieve the SHA512 of a file", CommandOptionType.NoValue)]
+        [Option("--blake2b256", "hash a file using BLAKE2b-256", CommandOptionType.NoValue)]
+        public bool BLAKE2b256 { get; }
+
+        [Option("--sha512", "hash a file using SHA512", CommandOptionType.NoValue)]
         public bool SHA512 { get; }
 
-        [Option("--sha384", "retrieve the SHA384 of a file", CommandOptionType.NoValue)]
+        [Option("--sha384", "hash a file using SHA384", CommandOptionType.NoValue)]
         public bool SHA384 { get; }
 
-        [Option("--sha256", "retrieve the SHA256 of a file", CommandOptionType.NoValue)]
+        [Option("--sha256", "hash a file using SHA256", CommandOptionType.NoValue)]
         public bool SHA256 { get; }
 
-        [Option("--sha1", "retrieve the SHA1 of a file", CommandOptionType.NoValue)]
+        [Option("--sha1", "hash a file using SHA1", CommandOptionType.NoValue)]
         public bool SHA1 { get; }
 
-        [Option("--md5", "retrieve the MD5 of a file", CommandOptionType.NoValue)]
+        [Option("--md5", "hash a file using MD5", CommandOptionType.NoValue)]
         public bool MD5 { get; }
 
-        [Option("--about", "view the version and license", CommandOptionType.NoValue)]
+        [Option("-a|--about", "view the program version and license", CommandOptionType.NoValue)]
         public bool About { get; }
 
-        [Argument(0)]
+        [Argument(0, Description = "specify a file path", Name = "file")]
         public string[] FilePaths { get; }
-
-        public enum HashFunction { BLAKE512, BLAKE256, SHA512, SHA384, SHA256, SHA1, MD5 }
 
         public static int Main(string[] args) => CommandLineApplication.Execute<Program>(args);
 
         private void OnExecute()
         {
             Console.WriteLine();
-            if (BLAKE512)
+            if (BLAKE3)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE512);
+                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE3);
             }
-            else if (BLAKE256)
+            else if (BLAKE2b512)
             {
-                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE256);
+                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE2b512);
+            }
+            else if (BLAKE2b256)
+            {
+                CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE2b256);
             }
             else if (SHA512)
             {

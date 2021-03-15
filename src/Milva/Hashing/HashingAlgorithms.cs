@@ -1,10 +1,11 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
+using Blake3;
 using Sodium;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright(C) 2020 Samuel Lucas
+    Copyright(C) 2020-2021 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -24,18 +25,23 @@ namespace Milva
 {
     public static class HashingAlgorithms
     {
-        public static byte[] BLAKE512(FileStream fileStream)
+        public static byte[] BLAKE3(FileStream fileStream)
         {
-            const int hashLength = 64;
-            using var blake2 = new GenericHash.GenericHashAlgorithm(key:(byte[])null, hashLength);
-            return blake2.ComputeHash(fileStream);
+            using var blake3 = new Blake3Stream(fileStream);
+            var hash = blake3.ComputeHash();
+            return hash.AsSpan().ToArray();
         }
 
-        public static byte[] BLAKE256(FileStream fileStream)
+        public static byte[] BLAKE2b512(FileStream fileStream)
         {
-            const int hashLength = 32;
-            using var blake2 = new GenericHash.GenericHashAlgorithm(key:(byte[])null, hashLength);
-            return blake2.ComputeHash(fileStream);
+            using var blake2b = new GenericHash.GenericHashAlgorithm(key: (byte[])null, bytes: 64);
+            return blake2b.ComputeHash(fileStream);
+        }
+
+        public static byte[] BLAKE2b256(FileStream fileStream)
+        {
+            using var blake2b = new GenericHash.GenericHashAlgorithm(key: (byte[])null, bytes: 32);
+            return blake2b.ComputeHash(fileStream);
         }
 
         public static byte[] SHA512(FileStream fileStream)

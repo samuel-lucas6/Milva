@@ -3,7 +3,7 @@ using System.IO;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright(C) 2020 Samuel Lucas
+    Copyright(C) 2020-2021 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -23,32 +23,32 @@ namespace Milva
 {
     public static class FileHandling
     {
-        public static byte[] HashFile(string filePath, Program.HashFunction hashFunction)
+        public static byte[] HashFile(string filePath, HashFunction hashFunction)
         {
             try
             {
-                const int bufferSize = 131072;
-                using FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize, FileOptions.SequentialScan);
+                using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 131072, FileOptions.SequentialScan);
                 return GetHash(fileStream, hashFunction);
             }
             catch (Exception ex) when (ExceptionFilters.FileAccess(ex))
             {
-                Console.WriteLine($"{Path.GetFileName(filePath)} - Error: {ex.GetType()}");
+                Console.WriteLine($"{Path.GetFileName(filePath)} - Error: {ex.GetType()}.");
                 return null;
             }
         }
 
-        private static byte[] GetHash(FileStream fileStream, Program.HashFunction hashFunction)
+        private static byte[] GetHash(FileStream fileStream, HashFunction hashFunction)
         {
             return hashFunction switch
             {
-                Program.HashFunction.BLAKE512 => HashingAlgorithms.BLAKE512(fileStream),
-                Program.HashFunction.BLAKE256 => HashingAlgorithms.BLAKE256(fileStream),
-                Program.HashFunction.SHA512 => HashingAlgorithms.SHA512(fileStream),
-                Program.HashFunction.SHA384 => HashingAlgorithms.SHA384(fileStream),
-                Program.HashFunction.SHA256 => HashingAlgorithms.SHA256(fileStream),
-                Program.HashFunction.SHA1 => HashingAlgorithms.SHA1(fileStream),
-                Program.HashFunction.MD5 => HashingAlgorithms.MD5(fileStream),
+                HashFunction.BLAKE3 => HashingAlgorithms.BLAKE3(fileStream),
+                HashFunction.BLAKE2b512 => HashingAlgorithms.BLAKE2b512(fileStream),
+                HashFunction.BLAKE2b256 => HashingAlgorithms.BLAKE2b256(fileStream),
+                HashFunction.SHA512 => HashingAlgorithms.SHA512(fileStream),
+                HashFunction.SHA384 => HashingAlgorithms.SHA384(fileStream),
+                HashFunction.SHA256 => HashingAlgorithms.SHA256(fileStream),
+                HashFunction.SHA1 => HashingAlgorithms.SHA1(fileStream),
+                HashFunction.MD5 => HashingAlgorithms.MD5(fileStream),
                 _ => null,
             };
         }
