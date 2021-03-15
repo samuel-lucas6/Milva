@@ -4,39 +4,43 @@ A simple, cross-platform command line tool for hashing files.
 
 ## Usage
 ```
-Usage: milva [options] [file]
+Usage: milva [options] <file>
+
+Arguments:
+  file          specify a file path
 
 Options:
-  --blake512  retrieve the BLAKE2-512 of a file
-  --blake256  retrieve the BLAKE2-256 of a file
-  --sha512    retrieve the SHA512 of a file
-  --sha384    retrieve the SHA384 of a file
-  --sha256    retrieve the SHA256 of a file
-  --sha1      retrieve the SHA1 of a file
-  --md5       retrieve the MD5 of a file
-  --about     view the version and license
-  --help      show help information
+  --blake3      hash a file using BLAKE3-256
+  --blake2b512  hash a file using BLAKE2b-512
+  --blake2b256  hash a file using BLAKE2b-256
+  --sha512      hash a file using SHA512
+  --sha384      hash a file using SHA384
+  --sha256      hash a file using SHA256
+  --sha1        hash a file using SHA1
+  --md5         hash a file using MD5
+  -a|--about    view the program version and license
+  -h|--help     show help information
 
 Examples:
   --sha256 [file]
   --sha1 [file]
   --md5 [file]
 ```
-When specifying file paths/file names that contain spaces, you must surround them with ' ' on Linux/macOS and " " on Windows:
+When specifying file paths/file names that contain spaces, you must surround them with 'apostrophes' on Linux/macOS and "speech marks" on Windows:
 ```
-$ ./milva --sha256 'Milva Logo.png'
-$ ./milva --sha256 '/home/samuel/Documents/Milva Logo.png'
+$ milva --sha256 'GitHub Logo.png'
+$ milva --sha256 '/home/samuel/Pictures/GitHub Logo.png'
 ```
 
 ## Running Milva
+On Windows:
+```
+$ cd Downloads
+$ milva -h
+```
 On Linux & macOS:
 ```
 $ cd Downloads
 $ chmod +x milva
-$ ./milva --help
-```
-On Windows:
-```
-$ cd Downloads
-$ milva --help
+$ ./milva -h
 ```
