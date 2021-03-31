@@ -28,24 +28,34 @@ namespace Milva
         {
             if (filePaths == null)
             {
-                DisplayMessage.Error("Please specify a file to hash.");
+                DisplayMessage.Error("Please specify a file/folder to hash.");
                 return;
             }
             foreach (string filePath in filePaths)
             {
-                if (!File.Exists(filePath))
+                try
                 {
-                    DisplayMessage.FilePathError(filePath, "This file doesn't exist.");
-                    continue;
+                    if (Directory.Exists(filePath))
+                    {
+                        string[] files = Directory.GetFiles(filePath, "*", SearchOption.AllDirectories);
+                        DisplayMessage.FilePathMessage(filePath, "Hashing each file in the directory...");
+                        HashEachFile(files, hashFunction);
+                        if (filePaths.Length > 1) { Console.WriteLine(); }
+                        continue;
+                    }
+                    if (!File.Exists(filePath))
+                    {
+                        DisplayMessage.FilePathError(filePath, "This file path doesn't exist.");
+                        continue;
+                    }
+                    byte[] hash = FileHandling.HashFile(filePath, hashFunction);
+                    DisplayMessage.FilePathMessage(filePath, ConvertHash.ToString(hash));
                 }
-                byte[] hash = FileHandling.HashFile(filePath, hashFunction);
-                if (hash != null) { DisplayHash(filePath, hash); }
+                catch (Exception ex) when (ExceptionFilters.FileAccess(ex))
+                {
+                    DisplayMessage.FilePathError(filePath, ex.GetType().ToString());
+                }
             }
-        }
-
-        private static void DisplayHash(string filePath, byte[] hash)
-        {
-            DisplayMessage.FilePathMessage(filePath, ConvertHash.ToString(hash));
         }
 
         public static void DisplayAbout()

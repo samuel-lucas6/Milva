@@ -25,16 +25,8 @@ namespace Milva
     {
         public static byte[] HashFile(string filePath, HashFunction hashFunction)
         {
-            try
-            {
-                using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 131072, FileOptions.SequentialScan);
-                return GetHash(fileStream, hashFunction);
-            }
-            catch (Exception ex) when (ExceptionFilters.FileAccess(ex))
-            {
-                DisplayMessage.FilePathError(filePath, ex.GetType().ToString());
-                return null;
-            }
+            using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 131072, FileOptions.SequentialScan);
+            return GetHash(fileStream, hashFunction);
         }
 
         private static byte[] GetHash(FileStream fileStream, HashFunction hashFunction)

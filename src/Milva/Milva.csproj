@@ -12,12 +12,16 @@
     <Copyright>Copyright © 2020-2021 Samuel Lucas</Copyright>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ApplicationIcon>Milva.ico</ApplicationIcon>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
-    <Version>1.1.0</Version>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <FileVersion>1.2.0.0</FileVersion>
+    <Version>1.2.0</Version>
     <PackageId>Milva</PackageId>
     <Product>Milva</Product>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <PackageProjectUrl>https://github.com/samuel-lucas6/Milva</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/samuel-lucas6/Milva</RepositoryUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <StartupObject>Milva.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>

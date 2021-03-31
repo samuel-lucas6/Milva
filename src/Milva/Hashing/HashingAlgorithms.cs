@@ -27,7 +27,14 @@ namespace Milva
     {
         public static byte[] BLAKE3(FileStream fileStream)
         {
-            using var blake3 = new Blake3Stream(fileStream);
+            int bytesRead;
+            var buffer = new byte[131072];
+            using var memoryStream = new MemoryStream();
+            using var blake3 = new Blake3Stream(memoryStream);
+            while ((bytesRead = fileStream.Read(buffer, offset: 0, buffer.Length)) > 0)
+            {
+                blake3.Write(buffer, offset: 0, bytesRead);
+            }
             var hash = blake3.ComputeHash();
             return hash.AsSpan().ToArray();
         }
