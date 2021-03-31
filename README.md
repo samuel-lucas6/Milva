@@ -26,7 +26,7 @@ Examples:
   --sha1 [file]
   --md5 [file]
 ```
-When specifying file paths/file names that contain spaces, you must surround them with 'apostrophes' on Linux/macOS and "speech marks" on Windows:
+When specifying file paths/file names that contain spaces, you must surround them with "speech marks" on Windows and 'apostrophes' on Linux/macOS:
 ```
 $ milva --sha256 'GitHub Logo.png'
 $ milva --sha256 '/home/samuel/Pictures/GitHub Logo.png'
@@ -35,12 +35,12 @@ $ milva --sha256 '/home/samuel/Pictures/GitHub Logo.png'
 ## Running Milva
 On Windows:
 ```
-$ cd Downloads
+$ cd "[download path]"
 $ milva -h
 ```
 On Linux & macOS:
 ```
-$ cd Downloads
+$ cd '[download path]'
 $ chmod +x milva
 $ ./milva -h
 ```
