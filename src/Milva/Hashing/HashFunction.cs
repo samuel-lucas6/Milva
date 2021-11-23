@@ -1,6 +1,6 @@
 ﻿/*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright(C) 2020-2021 Samuel Lucas
+    Copyright (C) 2020-2021 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -13,13 +13,18 @@
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program. If not, see https://www.gnu.org/licenses/. 
+    along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
 namespace Milva
 {
     public enum HashFunction
-    { 
+    {
+        SHAKE256,
+        SHAKE128,
+        SHA3_512,
+        SHA3_384,
+        SHA3_256,
         BLAKE3,
         BLAKE2b512,
         BLAKE2b256,

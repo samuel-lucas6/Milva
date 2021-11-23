@@ -1,10 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using System.Security;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright(C) 2020-2021 Samuel Lucas
+    Copyright (C) 2020-2021 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -17,7 +18,7 @@ using System.Reflection;
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program. If not, see https://www.gnu.org/licenses/. 
+    along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
 namespace Milva
@@ -37,7 +38,7 @@ namespace Milva
                 {
                     if (Directory.Exists(filePath))
                     {
-                        string[] files = Directory.GetFiles(filePath, "*", SearchOption.AllDirectories);
+                        string[] files = Directory.GetFiles(filePath, searchPattern: "*", SearchOption.AllDirectories);
                         DisplayMessage.FilePathMessage(filePath, "Hashing each file in the directory...");
                         HashEachFile(files, hashFunction);
                         if (filePaths.Length > 1) { Console.WriteLine(); }
@@ -48,10 +49,11 @@ namespace Milva
                         DisplayMessage.FilePathError(filePath, "This file path doesn't exist.");
                         continue;
                     }
-                    byte[] hash = FileHandling.HashFile(filePath, hashFunction);
-                    DisplayMessage.FilePathMessage(filePath, ConvertHash.ToString(hash));
+                    using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 131072, FileOptions.SequentialScan);
+                    byte[] hash = HashingAlgorithms.GetHash(fileStream, hashFunction);
+                    DisplayMessage.FilePathMessage(filePath, BitConverter.ToString(hash).Replace("-", "").ToLower());
                 }
-                catch (Exception ex) when (ExceptionFilters.FileAccess(ex))
+                catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or SecurityException or NotSupportedException)
                 {
                     DisplayMessage.FilePathError(filePath, ex.GetType().ToString());
                 }
@@ -61,9 +63,9 @@ namespace Milva
         public static void DisplayAbout()
         {
             string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Console.WriteLine($"Milva v{assemblyVersion.Substring(0, assemblyVersion.Length - 2)}");
-            Console.WriteLine("Copyright(C) 2020-2021 Samuel Lucas");
-            Console.WriteLine("License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.");
+            Console.WriteLine($"Milva v{assemblyVersion.Substring(startIndex: 0, assemblyVersion.Length - 2)}");
+            Console.WriteLine("Copyright (C) 2020-2021 Samuel Lucas");
+            Console.WriteLine("License GPLv3+: GNU GPL version 3 or later <https://www.gnu.org/licenses/gpl-3.0.html>.");
             Console.WriteLine("This is free software: you are free to change and redistribute it.");
             Console.WriteLine("There is NO WARRANTY, to the extent permitted by law.");
         }

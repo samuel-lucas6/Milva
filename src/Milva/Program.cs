@@ -3,7 +3,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright(C) 2020-2021 Samuel Lucas
+    Copyright (C) 2020-2021 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,7 +16,7 @@ using McMaster.Extensions.CommandLineUtils;
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program. If not, see https://www.gnu.org/licenses/. 
+    along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
 namespace Milva
@@ -32,6 +32,21 @@ Examples:
 Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
     public class Program
     {
+        [Option("--shake256", "hash a file using SHAKE256", CommandOptionType.NoValue)]
+        public bool SHAKE_256 { get; }
+
+        [Option("--shake128", "hash a file using SHAKE128", CommandOptionType.NoValue)]
+        public bool SHAKE_128 { get; }
+
+        [Option("--sha3512", "hash a file using SHA3-512", CommandOptionType.NoValue)]
+        public bool SHA3_512 { get; }
+
+        [Option("--sha3384", "hash a file using SHA3-384", CommandOptionType.NoValue)]
+        public bool SHA3_384 { get; }
+
+        [Option("--sha3256", "hash a file using SHA3-256", CommandOptionType.NoValue)]
+        public bool SHA3_256 { get; }
+
         [Option("--blake3", "hash a file using BLAKE3-256", CommandOptionType.NoValue)]
         public bool BLAKE3 { get; }
 
@@ -59,7 +74,7 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
         [Option("-a|--about", "view the program version and license", CommandOptionType.NoValue)]
         public bool About { get; }
 
-        [Argument(0, Description = "specify a file path", Name = "file")]
+        [Argument(order: 0, Description = "specify a file path", Name = "file")]
         public string[] FilePaths { get; }
 
         public static int Main(string[] args) => CommandLineApplication.Execute<Program>(args);
@@ -67,7 +82,27 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
         private void OnExecute()
         {
             Console.WriteLine();
-            if (BLAKE3)
+            if (SHAKE_256)
+            {
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE256);
+            }
+            else if (SHAKE_128)
+            {
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE128);
+            }
+            else if (SHA3_512)
+            {
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_512);
+            }
+            else if (SHA3_384)
+            {
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_384);
+            }
+            else if (SHA3_256)
+            {
+                CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_256);
+            }
+            else if (BLAKE3)
             {
                 CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE3);
             }

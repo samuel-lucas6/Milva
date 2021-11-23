@@ -2,10 +2,11 @@
 using System.Security.Cryptography;
 using Blake3;
 using Sodium;
+using Org.BouncyCastle.Crypto.Digests;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright(C) 2020-2021 Samuel Lucas
+    Copyright (C) 2020-2021 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -18,17 +19,68 @@ using Sodium;
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
-    along with this program. If not, see https://www.gnu.org/licenses/. 
+    along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
 namespace Milva
 {
     public static class HashingAlgorithms
     {
-        public static byte[] BLAKE3(FileStream fileStream)
+        private const int _bufferSize = 131072;
+
+        public static byte[] GetHash(FileStream fileStream, HashFunction hashFunction)
+        {
+            return hashFunction switch
+            {
+                HashFunction.SHAKE256 => GetSHAKE(fileStream, 256),
+                HashFunction.SHAKE128 => GetSHAKE(fileStream, 128),
+                HashFunction.SHA3_512 => GetSHA3(fileStream, 512),
+                HashFunction.SHA3_384 => GetSHA3(fileStream, 384),
+                HashFunction.SHA3_256 => GetSHA3(fileStream, 256),
+                HashFunction.BLAKE3 => GetBLAKE3(fileStream),
+                HashFunction.BLAKE2b512 => GetBLAKE2b(fileStream, 64),
+                HashFunction.BLAKE2b256 => GetBLAKE2b(fileStream, 32),
+                HashFunction.SHA512 => GetSHA512(fileStream),
+                HashFunction.SHA384 => GetSHA384(fileStream),
+                HashFunction.SHA256 => GetSHA256(fileStream),
+                HashFunction.SHA1 => GetSHA1(fileStream),
+                HashFunction.MD5 => GetMD5(fileStream),
+                _ => null,
+            };
+        }
+
+        private static byte[] GetSHAKE(FileStream fileStream, int outputBitLength)
         {
             int bytesRead;
-            var buffer = new byte[131072];
+            var buffer = new byte[_bufferSize];
+            var shake = new ShakeDigest(outputBitLength);
+            while ((bytesRead = fileStream.Read(buffer, offset: 0, buffer.Length)) > 0)
+            {
+                shake.BlockUpdate(buffer, inOff: 0, bytesRead);
+            }
+            var hash = new byte[outputBitLength / 8];
+            shake.DoFinal(hash, outOff: 0);
+            return hash;
+        }
+
+        private static byte[] GetSHA3(FileStream fileStream, int outputBitLength)
+        {
+            int bytesRead;
+            var buffer = new byte[_bufferSize];
+            var sha3 = new Sha3Digest(outputBitLength);
+            while ((bytesRead = fileStream.Read(buffer, offset: 0, buffer.Length)) > 0)
+            {
+                sha3.BlockUpdate(buffer, inOff: 0, bytesRead);
+            }
+            var hash = new byte[outputBitLength / 8];
+            sha3.DoFinal(hash, outOff: 0);
+            return hash;
+        }
+
+        private static byte[] GetBLAKE3(FileStream fileStream)
+        {
+            int bytesRead;
+            var buffer = new byte[_bufferSize];
             using var memoryStream = new MemoryStream();
             using var blake3 = new Blake3Stream(memoryStream);
             while ((bytesRead = fileStream.Read(buffer, offset: 0, buffer.Length)) > 0)
@@ -36,49 +88,23 @@ namespace Milva
                 blake3.Write(buffer, offset: 0, bytesRead);
             }
             var hash = blake3.ComputeHash();
-            return hash.AsSpan().ToArray();
+            return hash.AsSpanUnsafe().ToArray();
         }
 
-        public static byte[] BLAKE2b512(FileStream fileStream)
+        private static byte[] GetBLAKE2b(FileStream fileStream, int outputBytesLength)
         {
-            using var blake2b = new GenericHash.GenericHashAlgorithm(key: (byte[])null, bytes: 64);
+            using var blake2b = new GenericHash.GenericHashAlgorithm(key: (byte[])null, outputBytesLength);
             return blake2b.ComputeHash(fileStream);
         }
 
-        public static byte[] BLAKE2b256(FileStream fileStream)
-        {
-            using var blake2b = new GenericHash.GenericHashAlgorithm(key: (byte[])null, bytes: 32);
-            return blake2b.ComputeHash(fileStream);
-        }
+        private static byte[] GetSHA512(FileStream fileStream) => SHA512.Create().ComputeHash(fileStream);
 
-        public static byte[] SHA512(FileStream fileStream)
-        {
-            using var sha512 = new SHA512CryptoServiceProvider();
-            return sha512.ComputeHash(fileStream);
-        }
+        private static byte[] GetSHA384(FileStream fileStream) => SHA384.Create().ComputeHash(fileStream);
 
-        public static byte[] SHA384(FileStream fileStream)
-        {
-            using var sha384 = new SHA384CryptoServiceProvider();
-            return sha384.ComputeHash(fileStream);
-        }
+        private static byte[] GetSHA256(FileStream fileStream) => SHA256.Create().ComputeHash(fileStream);
 
-        public static byte[] SHA256(FileStream fileStream)
-        {
-            using var sha256 = new SHA256CryptoServiceProvider();
-            return sha256.ComputeHash(fileStream);
-        }
+        private static byte[] GetSHA1(FileStream fileStream) => SHA1.Create().ComputeHash(fileStream);
 
-        public static byte[] SHA1(FileStream fileStream)
-        {
-            using var sha1 = new SHA1CryptoServiceProvider();
-            return sha1.ComputeHash(fileStream);
-        }
-
-        public static byte[] MD5(FileStream fileStream)
-        {
-            using var md5 = new MD5CryptoServiceProvider();
-            return md5.ComputeHash(fileStream);
-        }
+        private static byte[] GetMD5(FileStream fileStream) => MD5.Create().ComputeHash(fileStream);
     }
 }
