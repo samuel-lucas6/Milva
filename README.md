@@ -10,6 +10,11 @@ Arguments:
   file          specify a file path
 
 Options:
+  --shake256    hash a file using SHAKE256
+  --shake128    hash a file using SHAKE128
+  --sha3512     hash a file using SHA3-512
+  --sha3384     hash a file using SHA3-384
+  --sha3256     hash a file using SHA3-256
   --blake3      hash a file using BLAKE3-256
   --blake2b512  hash a file using BLAKE2b-512
   --blake2b256  hash a file using BLAKE2b-256
