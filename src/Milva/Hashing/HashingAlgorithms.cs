@@ -26,7 +26,7 @@ namespace Milva
 {
     public static class HashingAlgorithms
     {
-        private const int _bufferSize = 131072;
+        public const int BufferSize = 131072;
 
         public static byte[] GetHash(FileStream fileStream, HashFunction hashFunction)
         {
@@ -52,13 +52,13 @@ namespace Milva
         private static byte[] GetSHAKE(FileStream fileStream, int outputBitLength)
         {
             int bytesRead;
-            var buffer = new byte[_bufferSize];
+            var buffer = new byte[BufferSize];
             var shake = new ShakeDigest(outputBitLength);
             while ((bytesRead = fileStream.Read(buffer, offset: 0, buffer.Length)) > 0)
             {
                 shake.BlockUpdate(buffer, inOff: 0, bytesRead);
             }
-            var hash = new byte[outputBitLength / 8];
+            var hash = new byte[outputBitLength / 4];
             shake.DoFinal(hash, outOff: 0);
             return hash;
         }
@@ -66,7 +66,7 @@ namespace Milva
         private static byte[] GetSHA3(FileStream fileStream, int outputBitLength)
         {
             int bytesRead;
-            var buffer = new byte[_bufferSize];
+            var buffer = new byte[BufferSize];
             var sha3 = new Sha3Digest(outputBitLength);
             while ((bytesRead = fileStream.Read(buffer, offset: 0, buffer.Length)) > 0)
             {
@@ -80,7 +80,7 @@ namespace Milva
         private static byte[] GetBLAKE3(FileStream fileStream)
         {
             int bytesRead;
-            var buffer = new byte[_bufferSize];
+            var buffer = new byte[BufferSize];
             using var memoryStream = new MemoryStream();
             using var blake3 = new Blake3Stream(memoryStream);
             while ((bytesRead = fileStream.Read(buffer, offset: 0, buffer.Length)) > 0)

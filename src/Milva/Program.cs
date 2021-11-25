@@ -33,10 +33,10 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
     public class Program
     {
         [Option("--shake256", "hash a file using SHAKE256", CommandOptionType.NoValue)]
-        public bool SHAKE_256 { get; }
+        public bool SHAKE256 { get; }
 
         [Option("--shake128", "hash a file using SHAKE128", CommandOptionType.NoValue)]
-        public bool SHAKE_128 { get; }
+        public bool SHAKE128 { get; }
 
         [Option("--sha3512", "hash a file using SHA3-512", CommandOptionType.NoValue)]
         public bool SHA3_512 { get; }
@@ -82,11 +82,11 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
         private void OnExecute()
         {
             Console.WriteLine();
-            if (SHAKE_256)
+            if (SHAKE256)
             {
                 CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE256);
             }
-            else if (SHAKE_128)
+            else if (SHAKE128)
             {
                 CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE128);
             }
@@ -140,7 +140,7 @@ Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
             }
             else
             {
-                DisplayMessage.Error("Unrecognized option. Specify --help for a list of available options and commands.");
+                DisplayMessage.Error("Unrecognised option. Specify --help for a list of available options and commands.");
             }
         }
     }

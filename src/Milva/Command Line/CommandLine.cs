@@ -49,7 +49,7 @@ namespace Milva
                         DisplayMessage.FilePathError(filePath, "This file path doesn't exist.");
                         continue;
                     }
-                    using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, bufferSize: 131072, FileOptions.SequentialScan);
+                    using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, HashingAlgorithms.BufferSize, FileOptions.SequentialScan);
                     byte[] hash = HashingAlgorithms.GetHash(fileStream, hashFunction);
                     DisplayMessage.FilePathMessage(filePath, BitConverter.ToString(hash).Replace("-", "").ToLower());
                 }
