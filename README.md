@@ -38,12 +38,12 @@ $ milva --sha256 '/home/samuel/Pictures/GitHub Logo.png'
 ```
 
 ## Running Milva
-On Windows:
+On Windows via the Command Prompt:
 ```
 $ cd "[download path]"
 $ milva -h
 ```
-On Linux & macOS:
+On Linux and macOS via the terminal:
 ```
 $ cd '[download path]'
 $ chmod +x milva
