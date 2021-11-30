@@ -2,6 +2,8 @@
 # Milva
 A simple, cross-platform command line tool for hashing files.
 
+![milva](https://user-images.githubusercontent.com/63159663/144137809-b6aa3b04-2791-4563-8023-a5021f6aad46.gif)
+
 ## Usage
 ```
 Usage: milva [options] <file>
