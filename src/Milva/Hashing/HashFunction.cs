@@ -1,6 +1,6 @@
 ﻿/*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright (C) 2020-2021 Samuel Lucas
+    Copyright (C) 2020-2022 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by

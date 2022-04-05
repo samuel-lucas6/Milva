@@ -3,7 +3,7 @@ using McMaster.Extensions.CommandLineUtils;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright (C) 2020-2021 Samuel Lucas
+    Copyright (C) 2020-2022 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -74,7 +74,7 @@ public class Program
     [Option("-a|--about", "view the program version and license", CommandOptionType.NoValue)]
     public bool About { get; }
 
-    [Argument(order: 0, Description = "specify a file path", Name = "file")]
+    [Argument(order: 0, Description = "specify a file/directory path", Name = "file")]
     public string[] FilePaths { get; }
 
     public static int Main(string[] args) => CommandLineApplication.Execute<Program>(args);

@@ -3,7 +3,7 @@ using System.IO;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
-    Copyright (C) 2020-2021 Samuel Lucas
+    Copyright (C) 2020-2022 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -25,18 +25,9 @@ public static class DisplayMessage
 {
     private const string ErrorWord = "Error";
 
-    public static void Error(string errorMessage)
-    {
-        Console.WriteLine($"{ErrorWord}: {errorMessage}");
-    }
+    public static void Error(string errorMessage) => Console.WriteLine($"{ErrorWord}: {errorMessage}");
 
-    public static void FilePathError(string filePath, string message)
-    {
-        Console.WriteLine($"{Path.GetFileName(filePath)} - {ErrorWord}: {message}");
-    }
+    public static void FilePathError(string filePath, string message) => Console.WriteLine($"{Path.GetFileName(filePath)} - {ErrorWord}: {message}");
 
-    public static void FilePathMessage(string filePath, string message)
-    {
-        Console.WriteLine($"{Path.GetFileName(filePath)}: {message}");
-    }
+    public static void FilePathMessage(string filePath, string message) => Console.WriteLine($"{Path.GetFileName(filePath)}: {message}");
 }
