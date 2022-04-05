@@ -16,22 +16,21 @@
     along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-namespace Milva
+namespace Milva;
+
+public enum HashFunction
 {
-    public enum HashFunction
-    {
-        SHAKE256,
-        SHAKE128,
-        SHA3_512,
-        SHA3_384,
-        SHA3_256,
-        BLAKE3,
-        BLAKE2b512,
-        BLAKE2b256,
-        SHA512,
-        SHA384,
-        SHA256,
-        SHA1,
-        MD5
-    }
+    SHAKE256,
+    SHAKE128,
+    SHA3_512,
+    SHA3_384,
+    SHA3_256,
+    BLAKE3,
+    BLAKE2b512,
+    BLAKE2b256,
+    SHA512,
+    SHA384,
+    SHA256,
+    SHA1,
+    MD5
 }

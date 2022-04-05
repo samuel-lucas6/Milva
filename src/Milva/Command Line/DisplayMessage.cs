@@ -19,25 +19,24 @@ using System.IO;
     along with this program. If not, see https://www.gnu.org/licenses/.
 */
 
-namespace Milva
+namespace Milva;
+
+public static class DisplayMessage
 {
-    public static class DisplayMessage
+    private const string ErrorWord = "Error";
+
+    public static void Error(string errorMessage)
     {
-        private const string _error = "Error";
+        Console.WriteLine($"{ErrorWord}: {errorMessage}");
+    }
 
-        public static void Error(string errorMessage)
-        {
-            Console.WriteLine($"{_error}: {errorMessage}");
-        }
+    public static void FilePathError(string filePath, string message)
+    {
+        Console.WriteLine($"{Path.GetFileName(filePath)} - {ErrorWord}: {message}");
+    }
 
-        public static void FilePathError(string filePath, string message)
-        {
-            Console.WriteLine($"{Path.GetFileName(filePath)} - {_error}: {message}");
-        }
-
-        public static void FilePathMessage(string filePath, string message)
-        {
-            Console.WriteLine($"{Path.GetFileName(filePath)}: {message}");
-        }
+    public static void FilePathMessage(string filePath, string message)
+    {
+        Console.WriteLine($"{Path.GetFileName(filePath)}: {message}");
     }
 }
