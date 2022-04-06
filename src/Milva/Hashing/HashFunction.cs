@@ -1,5 +1,5 @@
 ﻿/*
-    Milva: A simple, cross-platform command line tool for hashing files.
+    Milva: A simple, cross-platform command line tool for hashing files and text.
     Copyright (C) 2020-2022 Samuel Lucas
 
     This program is free software: you can redistribute it and/or modify
