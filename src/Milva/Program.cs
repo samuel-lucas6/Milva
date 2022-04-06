@@ -26,56 +26,58 @@ namespace Milva;
 
 Examples:
   --sha256 [file]
-  --sha1 [file]
-  --md5 [file]
+  --sha256 --text [text]
 
 Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
 public class Program
 {
-    [Option("--shake256", "hash a file using SHAKE256", CommandOptionType.NoValue)]
+    [Option("--shake256", "use SHAKE256", CommandOptionType.NoValue)]
     public bool SHAKE256 { get; }
 
-    [Option("--shake128", "hash a file using SHAKE128", CommandOptionType.NoValue)]
+    [Option("--shake128", "use SHAKE128", CommandOptionType.NoValue)]
     public bool SHAKE128 { get; }
 
-    [Option("--sha3512", "hash a file using SHA3-512", CommandOptionType.NoValue)]
+    [Option("--sha3512", "use SHA3-512", CommandOptionType.NoValue)]
     public bool SHA3_512 { get; }
 
-    [Option("--sha3384", "hash a file using SHA3-384", CommandOptionType.NoValue)]
+    [Option("--sha3384", "use SHA3-384", CommandOptionType.NoValue)]
     public bool SHA3_384 { get; }
 
-    [Option("--sha3256", "hash a file using SHA3-256", CommandOptionType.NoValue)]
+    [Option("--sha3256", "use SHA3-256", CommandOptionType.NoValue)]
     public bool SHA3_256 { get; }
 
-    [Option("--blake3", "hash a file using BLAKE3-256", CommandOptionType.NoValue)]
+    [Option("--blake3", "use BLAKE3-256", CommandOptionType.NoValue)]
     public bool BLAKE3 { get; }
 
-    [Option("--blake2b512", "hash a file using BLAKE2b-512", CommandOptionType.NoValue)]
+    [Option("--blake2b512", "use BLAKE2b-512", CommandOptionType.NoValue)]
     public bool BLAKE2b512 { get; }
 
-    [Option("--blake2b256", "hash a file using BLAKE2b-256", CommandOptionType.NoValue)]
+    [Option("--blake2b256", "use BLAKE2b-256", CommandOptionType.NoValue)]
     public bool BLAKE2b256 { get; }
 
-    [Option("--sha512", "hash a file using SHA512", CommandOptionType.NoValue)]
+    [Option("--sha512", "use SHA512", CommandOptionType.NoValue)]
     public bool SHA512 { get; }
 
-    [Option("--sha384", "hash a file using SHA384", CommandOptionType.NoValue)]
+    [Option("--sha384", "use SHA384", CommandOptionType.NoValue)]
     public bool SHA384 { get; }
 
-    [Option("--sha256", "hash a file using SHA256", CommandOptionType.NoValue)]
+    [Option("--sha256", "use SHA256", CommandOptionType.NoValue)]
     public bool SHA256 { get; }
 
-    [Option("--sha1", "hash a file using SHA1", CommandOptionType.NoValue)]
+    [Option("--sha1", "use SHA1", CommandOptionType.NoValue)]
     public bool SHA1 { get; }
 
-    [Option("--md5", "hash a file using MD5", CommandOptionType.NoValue)]
+    [Option("--md5", "use MD5", CommandOptionType.NoValue)]
     public bool MD5 { get; }
+    
+    [Option("-t|--text", "specify text instead of files/directories", CommandOptionType.NoValue)]
+    public bool Text { get; }
     
     [Option("-a|--about", "view the program version and license", CommandOptionType.NoValue)]
     public bool About { get; }
 
-    [Argument(order: 0, Description = "specify a file/directory path", Name = "file")]
-    public string[] FilePaths { get; }
+    [Argument(order: 0, Description = "specify files/directories or text", Name = "inputs")]
+    public string[] Inputs { get; }
 
     public static int Main(string[] args) => CommandLineApplication.Execute<Program>(args);
 
@@ -84,55 +86,55 @@ public class Program
         Console.WriteLine();
         if (SHAKE256)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE256);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.SHAKE256);
         }
         else if (SHAKE128)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.SHAKE128);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.SHAKE128);
         }
         else if (SHA3_512)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_512);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.SHA3_512);
         }
         else if (SHA3_384)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_384);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.SHA3_384);
         }
         else if (SHA3_256)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.SHA3_256);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.SHA3_256);
         }
         else if (BLAKE3)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE3);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.BLAKE3);
         }
         else if (BLAKE2b512)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE2b512);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.BLAKE2b512);
         }
         else if (BLAKE2b256)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.BLAKE2b256);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.BLAKE2b256);
         }
         else if (SHA512)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.SHA512);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.SHA512);
         }
         else if (SHA384)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.SHA384);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.SHA384);
         }
         else if (SHA256)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.SHA256);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.SHA256);
         }
         else if (SHA1)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.SHA1);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.SHA1);
         }
         else if (MD5)
         {
-            CommandLine.HashEachFile(FilePaths, HashFunction.MD5);
+            CommandLine.HashEachInput(Inputs, Text, HashFunction.MD5);
         }
         else if (About)
         {

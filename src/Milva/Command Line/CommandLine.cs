@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using System.Security;
+using System.Text;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files.
@@ -25,37 +26,40 @@ namespace Milva;
 
 public static class CommandLine
 {
-    public static void HashEachFile(string[] filePaths, HashFunction hashFunction)
+    public static void HashEachInput(string[] inputs, bool text, HashFunction hashFunction)
     {
-        if (filePaths == null)
+        if (inputs == null)
         {
-            DisplayMessage.Error("Please specify a file/folder to hash.");
+            DisplayMessage.Error(!text ? "Please specify a file/directory to hash." : "Please specify text to hash.");
             return;
         }
-        foreach (string filePath in filePaths)
+        foreach (string input in inputs)
         {
             try
             {
-                if (Directory.Exists(filePath))
+                switch (text)
                 {
-                    string[] files = Directory.GetFiles(filePath, searchPattern: "*", SearchOption.AllDirectories);
-                    DisplayMessage.FilePathMessage(filePath, "Hashing each file in the directory...");
-                    HashEachFile(files, hashFunction);
-                    if (filePaths.Length > 1) { Console.WriteLine(); }
-                    continue;
+                    case false when Directory.Exists(input):
+                    {
+                        string[] filePaths = Directory.GetFiles(input, searchPattern: "*", SearchOption.AllDirectories);
+                        int arrayIndex = Array.IndexOf(inputs, input);
+                        if (arrayIndex > 0) { Console.WriteLine(); }
+                        DisplayMessage.Message(input, "Hashing each file in the directory...");
+                        HashEachInput(filePaths, text: false, hashFunction);
+                        if (arrayIndex != inputs.Length - 1) { Console.WriteLine(); }
+                        continue;
+                    }
+                    case false when !File.Exists(input):
+                        DisplayMessage.NamedError(input, "This file/directory path doesn't exist.");
+                        continue;
                 }
-                if (!File.Exists(filePath))
-                {
-                    DisplayMessage.FilePathError(filePath, "This file path doesn't exist.");
-                    continue;
-                }
-                using var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read, HashingAlgorithms.BufferSize, FileOptions.SequentialScan);
-                byte[] hash = HashingAlgorithms.GetHash(fileStream, hashFunction);
-                DisplayMessage.FilePathMessage(filePath, BitConverter.ToString(hash).Replace("-", "").ToLower());
+                using Stream stream = !text ? new FileStream(input, FileMode.Open, FileAccess.Read, FileShare.Read, HashingAlgorithms.BufferSize, FileOptions.SequentialScan) : new MemoryStream(Encoding.UTF8.GetBytes(input));
+                byte[] hash = HashingAlgorithms.GetHash(stream, hashFunction);
+                DisplayMessage.Message(input, BitConverter.ToString(hash).Replace("-", "").ToLower());
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or SecurityException or NotSupportedException)
             {
-                DisplayMessage.FilePathError(filePath, ex.GetType().ToString());
+                DisplayMessage.NamedError(input, ex.GetType().ToString());
             }
         }
     }

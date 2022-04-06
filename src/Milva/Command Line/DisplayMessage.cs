@@ -25,9 +25,9 @@ public static class DisplayMessage
 {
     private const string ErrorWord = "Error";
 
-    public static void Error(string errorMessage) => Console.WriteLine($"{ErrorWord}: {errorMessage}");
+    public static void Error(string message) => Console.WriteLine($"{ErrorWord}: {message}");
 
-    public static void FilePathError(string filePath, string message) => Console.WriteLine($"{Path.GetFileName(filePath)} - {ErrorWord}: {message}");
+    public static void NamedError(string input, string message) => Console.WriteLine($"{Path.GetFileName(input)} - {ErrorWord}: {message}");
 
-    public static void FilePathMessage(string filePath, string message) => Console.WriteLine($"{Path.GetFileName(filePath)}: {message}");
+    public static void Message(string input, string message) => Console.WriteLine($"{Path.GetFileName(input)}: {message}");
 }
