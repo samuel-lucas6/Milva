@@ -82,7 +82,7 @@ public class Program
 
     public static int Main(string[] args) => CommandLineApplication.Execute<Program>(args);
 
-    private void OnExecute()
+    private int OnExecute()
     {
         Console.WriteLine();
         if (SHAKE256)
@@ -139,11 +139,12 @@ public class Program
         }
         else if (About)
         {
-            CommandLine.DisplayAbout();
+            DisplayMessage.About();
         }
         else
         {
             DisplayMessage.Error("Unknown command. Please specify -h|--help for a list of options and examples.");
         }
+        return Environment.ExitCode;
     }
 }

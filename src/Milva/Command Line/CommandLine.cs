@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Security;
 using System.Text;
 
@@ -62,15 +61,5 @@ public static class CommandLine
                 DisplayMessage.NamedError(input, ex.GetType().ToString());
             }
         }
-    }
-
-    public static void DisplayAbout()
-    {
-        string assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version?.ToString();
-        Console.WriteLine($"Milva v{assemblyVersion?[..^2]}");
-        Console.WriteLine("Copyright (C) 2020-2022 Samuel Lucas");
-        Console.WriteLine("License GPLv3+: GNU GPL version 3 or later <https://www.gnu.org/licenses/gpl-3.0.html>.");
-        Console.WriteLine("This is free software: you are free to change and redistribute it.");
-        Console.WriteLine("There is NO WARRANTY, to the extent permitted by law.");
     }
 }
