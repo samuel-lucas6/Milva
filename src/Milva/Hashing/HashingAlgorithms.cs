@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
-using Blake3;
-using Sodium;
 using Org.BouncyCastle.Crypto.Digests;
+using Blake3;
+using Geralt;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files and text.
@@ -91,9 +91,9 @@ public static class HashingAlgorithms
         return hash.AsSpanUnsafe().ToArray();
     }
 
-    private static byte[] GetBLAKE2b(Stream stream, int outputBytesLength)
+    private static byte[] GetBLAKE2b(Stream stream, int hashSize)
     {
-        using var blake2b = new GenericHash.GenericHashAlgorithm(key: (byte[])null, outputBytesLength);
+        using var blake2b = new BLAKE2bHashAlgorithm(hashSize);
         return blake2b.ComputeHash(stream);
     }
 
