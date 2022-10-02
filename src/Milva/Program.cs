@@ -38,22 +38,22 @@ public class Program
     [Option("--shake128", "use SHAKE128", CommandOptionType.NoValue)]
     public bool SHAKE128 { get; }
 
-    [Option("--sha3512", "use SHA3-512", CommandOptionType.NoValue)]
+    [Option("--sha3-512", "use SHA3-512", CommandOptionType.NoValue)]
     public bool SHA3_512 { get; }
 
-    [Option("--sha3384", "use SHA3-384", CommandOptionType.NoValue)]
+    [Option("--sha3-384", "use SHA3-384", CommandOptionType.NoValue)]
     public bool SHA3_384 { get; }
 
-    [Option("--sha3256", "use SHA3-256", CommandOptionType.NoValue)]
+    [Option("--sha3-256", "use SHA3-256", CommandOptionType.NoValue)]
     public bool SHA3_256 { get; }
 
     [Option("--blake3", "use BLAKE3-256", CommandOptionType.NoValue)]
     public bool BLAKE3 { get; }
 
-    [Option("--blake2b512", "use BLAKE2b-512", CommandOptionType.NoValue)]
+    [Option("--blake2b-512", "use BLAKE2b-512", CommandOptionType.NoValue)]
     public bool BLAKE2b512 { get; }
 
-    [Option("--blake2b256", "use BLAKE2b-256", CommandOptionType.NoValue)]
+    [Option("--blake2b-256", "use BLAKE2b-256", CommandOptionType.NoValue)]
     public bool BLAKE2b256 { get; }
 
     [Option("--sha512", "use SHA-512", CommandOptionType.NoValue)]
