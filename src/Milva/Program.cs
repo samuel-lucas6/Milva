@@ -56,16 +56,16 @@ public class Program
     [Option("--blake2b256", "use BLAKE2b-256", CommandOptionType.NoValue)]
     public bool BLAKE2b256 { get; }
 
-    [Option("--sha512", "use SHA512", CommandOptionType.NoValue)]
+    [Option("--sha512", "use SHA-512", CommandOptionType.NoValue)]
     public bool SHA512 { get; }
 
-    [Option("--sha384", "use SHA384", CommandOptionType.NoValue)]
+    [Option("--sha384", "use SHA-384", CommandOptionType.NoValue)]
     public bool SHA384 { get; }
 
-    [Option("--sha256", "use SHA256", CommandOptionType.NoValue)]
+    [Option("--sha256", "use SHA-256", CommandOptionType.NoValue)]
     public bool SHA256 { get; }
 
-    [Option("--sha1", "use SHA1", CommandOptionType.NoValue)]
+    [Option("--sha1", "use SHA-1", CommandOptionType.NoValue)]
     public bool SHA1 { get; }
 
     [Option("--md5", "use MD5", CommandOptionType.NoValue)]
