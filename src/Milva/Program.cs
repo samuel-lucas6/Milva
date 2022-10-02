@@ -26,6 +26,7 @@ namespace Milva;
 
 Examples:
   --sha256 [file]
+  --sha256 [directory]
   --sha256 --text [text]
 
 Please report bugs to <https://github.com/samuel-lucas6/Milva/issues>.")]
