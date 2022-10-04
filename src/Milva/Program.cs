@@ -39,6 +39,10 @@ public enum HashFunction
     SHA512,
     SHA384,
     SHA256,
+    RIPEMD320,
+    RIPEMD256,
+    RIPEMD160,
+    RIPEMD128,
     SHA1,
     MD5
 }
@@ -92,6 +96,18 @@ public class Program
 
     [Option("--sha256", "use SHA-256", CommandOptionType.NoValue)]
     public bool SHA256 { get; }
+    
+    [Option("--ripemd-320", "use RIPEMD-320", CommandOptionType.NoValue)]
+    public bool RIPEMD320 { get; }
+    
+    [Option("--ripemd-256", "use RIPEMD-256", CommandOptionType.NoValue)]
+    public bool RIPEMD256 { get; }
+    
+    [Option("--ripemd-160", "use RIPEMD-160", CommandOptionType.NoValue)]
+    public bool RIPEMD160 { get; }
+    
+    [Option("--ripemd-128", "use RIPEMD-128", CommandOptionType.NoValue)]
+    public bool RIPEMD128 { get; }
 
     [Option("--sha1", "use SHA-1", CommandOptionType.NoValue)]
     public bool SHA1 { get; }
@@ -151,6 +167,18 @@ public class Program
         }
         else if (SHA256) {
             HashEachInput(Inputs, Text, HashFunction.SHA256);
+        }
+        else if (RIPEMD320) {
+            HashEachInput(Inputs, Text, HashFunction.RIPEMD320);
+        }
+        else if (RIPEMD256) {
+            HashEachInput(Inputs, Text, HashFunction.RIPEMD256);
+        }
+        else if (RIPEMD160) {
+            HashEachInput(Inputs, Text, HashFunction.RIPEMD160);
+        }
+        else if (RIPEMD128) {
+            HashEachInput(Inputs, Text, HashFunction.RIPEMD128);
         }
         else if (SHA1) {
             HashEachInput(Inputs, Text, HashFunction.SHA1);

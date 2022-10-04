@@ -1,6 +1,7 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Crypto.Digests;
+using Org.BouncyCastle.Crypto;
 using Blake3;
 using Geralt;
 
@@ -32,11 +33,11 @@ public static class HashingAlgorithms
     {
         return hashFunction switch
         {
-            HashFunction.SHAKE256 => GetSHAKE(stream, 64),
-            HashFunction.SHAKE128 => GetSHAKE(stream, 32),
-            HashFunction.SHA3_512 => GetSHA3(stream, 64),
-            HashFunction.SHA3_384 => GetSHA3(stream, 48),
-            HashFunction.SHA3_256 => GetSHA3(stream, 32),
+            HashFunction.SHAKE256 => GetBouncyCastleHash(stream, new ShakeDigest(256), 64),
+            HashFunction.SHAKE128 => GetBouncyCastleHash(stream, new ShakeDigest(128), 32),
+            HashFunction.SHA3_512 => GetBouncyCastleHash(stream, new Sha3Digest(512), 64),
+            HashFunction.SHA3_384 => GetBouncyCastleHash(stream, new Sha3Digest(384), 48),
+            HashFunction.SHA3_256 => GetBouncyCastleHash(stream, new Sha3Digest(256), 32),
             HashFunction.BLAKE3 => GetBLAKE3(stream),
             HashFunction.BLAKE2b512 => GetBLAKE2b(stream, 64),
             HashFunction.BLAKE2b384 => GetBLAKE2b(stream, 48),
@@ -45,37 +46,26 @@ public static class HashingAlgorithms
             HashFunction.SHA512 => GetSHA512(stream),
             HashFunction.SHA384 => GetSHA384(stream),
             HashFunction.SHA256 => GetSHA256(stream),
+            HashFunction.RIPEMD320 => GetBouncyCastleHash(stream, new RipeMD320Digest(), 40),
+            HashFunction.RIPEMD256 => GetBouncyCastleHash(stream, new RipeMD256Digest(), 32),
+            HashFunction.RIPEMD160 => GetBouncyCastleHash(stream, new RipeMD160Digest(), 20),
+            HashFunction.RIPEMD128 => GetBouncyCastleHash(stream, new RipeMD128Digest(), 16),
             HashFunction.SHA1 => GetSHA1(stream),
             HashFunction.MD5 => GetMD5(stream),
             _ => null
         };
     }
-
-    private static byte[] GetSHAKE(Stream stream, int hashSize)
+    
+    private static byte[] GetBouncyCastleHash(Stream stream, IDigest digest, int hashSize)
     {
         int bytesRead;
         var buffer = new byte[BufferSize];
-        var shake = new ShakeDigest(hashSize * 4);
         while ((bytesRead = stream.Read(buffer)) > 0)
         {
-            shake.BlockUpdate(buffer, inOff: 0, bytesRead);
+            digest.BlockUpdate(buffer, inOff: 0, bytesRead);
         }
         var hash = new byte[hashSize];
-        shake.DoFinal(hash, outOff: 0);
-        return hash;
-    }
-
-    private static byte[] GetSHA3(Stream stream, int hashSize)
-    {
-        int bytesRead;
-        var buffer = new byte[BufferSize];
-        var sha3 = new Sha3Digest(hashSize * 8);
-        while ((bytesRead = stream.Read(buffer)) > 0)
-        {
-            sha3.BlockUpdate(buffer, inOff: 0, bytesRead);
-        }
-        var hash = new byte[hashSize];
-        sha3.DoFinal(hash, outOff: 0);
+        digest.DoFinal(hash, outOff: 0);
         return hash;
     }
 
