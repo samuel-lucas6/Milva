@@ -39,6 +39,7 @@ public enum HashFunction
     SHA512,
     SHA384,
     SHA256,
+    Whirlpool,
     RIPEMD320,
     RIPEMD256,
     RIPEMD160,
@@ -96,6 +97,9 @@ public class Program
 
     [Option("--sha256", "use SHA-256", CommandOptionType.NoValue)]
     public bool SHA256 { get; }
+    
+    [Option("--whirlpool", "use Whirlpool", CommandOptionType.NoValue)]
+    public bool Whirlpool { get; }
     
     [Option("--ripemd-320", "use RIPEMD-320", CommandOptionType.NoValue)]
     public bool RIPEMD320 { get; }
@@ -167,6 +171,9 @@ public class Program
         }
         else if (SHA256) {
             HashEachInput(Inputs, Text, HashFunction.SHA256);
+        }
+        else if (Whirlpool) {
+            HashEachInput(Inputs, Text, HashFunction.Whirlpool);
         }
         else if (RIPEMD320) {
             HashEachInput(Inputs, Text, HashFunction.RIPEMD320);

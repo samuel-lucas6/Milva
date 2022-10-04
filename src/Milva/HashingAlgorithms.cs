@@ -46,6 +46,7 @@ public static class HashingAlgorithms
             HashFunction.SHA512 => GetSHA512(stream),
             HashFunction.SHA384 => GetSHA384(stream),
             HashFunction.SHA256 => GetSHA256(stream),
+            HashFunction.Whirlpool => GetBouncyCastleHash(stream, new WhirlpoolDigest(), 64),
             HashFunction.RIPEMD320 => GetBouncyCastleHash(stream, new RipeMD320Digest(), 40),
             HashFunction.RIPEMD256 => GetBouncyCastleHash(stream, new RipeMD256Digest(), 32),
             HashFunction.RIPEMD160 => GetBouncyCastleHash(stream, new RipeMD160Digest(), 20),
