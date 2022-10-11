@@ -2,28 +2,26 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <PublishReadyToRunShowWarnings>true</PublishReadyToRunShowWarnings>
     <TargetFramework>net6.0</TargetFramework>
-	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-    <Platforms>x64</Platforms>
+    <StartupObject>Milva.Program</StartupObject>
     <AssemblyName>milva</AssemblyName>
-    <PackageLicenseExpression>GPLv3</PackageLicenseExpression>
-    <Authors>Samuel Lucas</Authors>
-    <Description>A simple, cross-platform command line tool for hashing files and text.</Description>
-    <Copyright>Copyright © 2020-2022 Samuel Lucas</Copyright>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <ApplicationIcon>Milva.ico</ApplicationIcon>
-    <AssemblyVersion>1.4.0.0</AssemblyVersion>
-    <FileVersion>1.4.0.0</FileVersion>
-    <Version>1.4.0</Version>
-    <PackageId>Milva</PackageId>
+    <Version>1.5.0</Version>
+    <Authors>Samuel Lucas</Authors>
     <Product>Milva</Product>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <AssemblyTitle>A simple, cross-platform command line tool for hashing files and text.</AssemblyTitle>
+    <Copyright>Copyright © 2020-2022 Samuel Lucas</Copyright>
     <PackageProjectUrl>https://github.com/samuel-lucas6/Milva</PackageProjectUrl>
     <RepositoryUrl>https://github.com/samuel-lucas6/Milva</RepositoryUrl>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <StartupObject>Milva.Program</StartupObject>
-    <ErrorReport>none</ErrorReport>
     <RepositoryType>git</RepositoryType>
+    <NeutralLanguage>en-GB</NeutralLanguage>
+    <AssemblyVersion>1.5.0.0</AssemblyVersion>
+    <PackageLicenseExpression>GPLv3</PackageLicenseExpression>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <ErrorReport>none</ErrorReport>
   </PropertyGroup>
 
   <ItemGroup>
