@@ -36,6 +36,10 @@ public enum HashFunction
     BLAKE2b384,
     BLAKE2b256,
     BLAKE2b160,
+    BLAKE2s256,
+    BLAKE2s224,
+    BLAKE2s160,
+    BLAKE2s128,
     SHA512,
     SHA384,
     SHA256,
@@ -88,6 +92,18 @@ public class Program
     
     [Option("--blake2b-160", "use BLAKE2b-160", CommandOptionType.NoValue)]
     public bool BLAKE2b160 { get; }
+    
+    [Option("--blake2s-256", "use BLAKE2s-256", CommandOptionType.NoValue)]
+    public bool BLAKE2s256 { get; }
+    
+    [Option("--blake2s-224", "use BLAKE2s-224", CommandOptionType.NoValue)]
+    public bool BLAKE2s224 { get; }
+    
+    [Option("--blake2s-160", "use BLAKE2s-160", CommandOptionType.NoValue)]
+    public bool BLAKE2s160 { get; }
+    
+    [Option("--blake2s-128", "use BLAKE2s-128", CommandOptionType.NoValue)]
+    public bool BLAKE2s128 { get; }
 
     [Option("--sha512", "use SHA-512", CommandOptionType.NoValue)]
     public bool SHA512 { get; }
@@ -162,6 +178,18 @@ public class Program
         }
         else if (BLAKE2b160) {
             HashEachInput(Inputs, Text, HashFunction.BLAKE2b160);
+        }
+        else if (BLAKE2s256) {
+            HashEachInput(Inputs, Text, HashFunction.BLAKE2s256);
+        }
+        else if (BLAKE2s224) {
+            HashEachInput(Inputs, Text, HashFunction.BLAKE2s224);
+        }
+        else if (BLAKE2s160) {
+            HashEachInput(Inputs, Text, HashFunction.BLAKE2s160);
+        }
+        else if (BLAKE2s128) {
+            HashEachInput(Inputs, Text, HashFunction.BLAKE2s128);
         }
         else if (SHA512) {
             HashEachInput(Inputs, Text, HashFunction.SHA512);
