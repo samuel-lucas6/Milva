@@ -1,9 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Security.Cryptography;
 using Org.BouncyCastle.Crypto.Digests;
 using Org.BouncyCastle.Crypto;
+using static Monocypher.Monocypher;
 using Blake3;
-using Geralt;
 
 /*
     Milva: A simple, cross-platform command line tool for hashing files and text.
@@ -65,8 +66,7 @@ public static class HashingAlgorithms
     {
         int bytesRead;
         var buffer = new byte[BufferSize];
-        while ((bytesRead = stream.Read(buffer)) > 0)
-        {
+        while ((bytesRead = stream.Read(buffer)) > 0) {
             digest.BlockUpdate(buffer, inOff: 0, bytesRead);
         }
         var hash = new byte[hashSize];
@@ -80,8 +80,7 @@ public static class HashingAlgorithms
         var buffer = new byte[BufferSize];
         using var backendStream = new MemoryStream();
         using var blake3 = new Blake3Stream(backendStream);
-        while ((bytesRead = stream.Read(buffer)) > 0)
-        {
+        while ((bytesRead = stream.Read(buffer)) > 0) {
             blake3.Write(buffer, offset: 0, bytesRead);
         }
         var hash = blake3.ComputeHash();
@@ -90,8 +89,16 @@ public static class HashingAlgorithms
 
     private static byte[] GetBLAKE2b(Stream stream, int hashSize)
     {
-        using var blake2b = new BLAKE2bHashAlgorithm(hashSize);
-        return blake2b.ComputeHash(stream);
+        int bytesRead;
+        var ctx = new crypto_blake2b_ctx();
+        crypto_blake2b_general_init(ref ctx, hashSize, IntPtr.Zero, key_size: 0);
+        Span<byte> buffer = new byte[BufferSize];
+        while ((bytesRead = stream.Read(buffer)) > 0) {
+            crypto_blake2b_update(ref ctx, buffer[..bytesRead]);
+        }
+        var hash = new byte[hashSize];
+        crypto_blake2b_final(ref ctx, hash);
+        return hash;
     }
 
     private static byte[] GetSHA512(Stream stream)
