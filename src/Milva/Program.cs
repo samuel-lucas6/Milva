@@ -215,6 +215,10 @@ public class Program
                     case false when Directory.Exists(input):
                     {
                         string[] filePaths = Directory.GetFiles(input, searchPattern: "*", SearchOption.AllDirectories);
+                        if (filePaths.Length == 0) {
+                            DisplayMessage.NamedError(input, "This directory is empty.");
+                            continue;
+                        }
                         int inputsIndex = Array.IndexOf(inputs, input);
                         if (inputsIndex > 0) {
                             Console.WriteLine();
