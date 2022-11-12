@@ -24,36 +24,8 @@ using McMaster.Extensions.CommandLineUtils;
 
 namespace Milva;
 
-public enum HashFunction
-{
-    SHAKE256,
-    SHAKE128,
-    SHA3_512,
-    SHA3_384,
-    SHA3_256,
-    BLAKE3,
-    BLAKE2b512,
-    BLAKE2b384,
-    BLAKE2b256,
-    BLAKE2b160,
-    BLAKE2s256,
-    BLAKE2s224,
-    BLAKE2s160,
-    BLAKE2s128,
-    SHA512,
-    SHA384,
-    SHA256,
-    Whirlpool,
-    RIPEMD320,
-    RIPEMD256,
-    RIPEMD160,
-    RIPEMD128,
-    SHA1,
-    MD5
-}
-
 [HelpOption("-h|--help", ShowInHelpText = false)]
-[Command(ExtendedHelpText = @"  -h|--help     show help information
+[Command(ExtendedHelpText = @"  -h|--help      show help information
 
 Examples:
   --sha256 [file]
@@ -63,6 +35,9 @@ Examples:
 Please report bugs at <https://github.com/samuel-lucas6/Milva/issues>.")]
 public class Program
 {
+    [Option("--blake3", "use BLAKE3-256", CommandOptionType.NoValue)]
+    public bool BLAKE3 { get; }
+    
     [Option("--shake256", "use SHAKE256", CommandOptionType.NoValue)]
     public bool SHAKE256 { get; }
 
@@ -77,9 +52,6 @@ public class Program
 
     [Option("--sha3-256", "use SHA3-256", CommandOptionType.NoValue)]
     public bool SHA3_256 { get; }
-
-    [Option("--blake3", "use BLAKE3-256", CommandOptionType.NoValue)]
-    public bool BLAKE3 { get; }
 
     [Option("--blake2b-512", "use BLAKE2b-512", CommandOptionType.NoValue)]
     public bool BLAKE2b512 { get; }
@@ -239,25 +211,25 @@ public class Program
         foreach (string input in inputs) {
             try
             {
-                if (!text && Directory.Exists(input)) {
-                    string[] filePaths = Directory.GetFiles(input, searchPattern: "*", SearchOption.AllDirectories);
-                    int inputsIndex = Array.IndexOf(inputs, input);
-                    if (inputsIndex > 0) {
-                        Console.WriteLine();
+                switch (text) {
+                    case false when Directory.Exists(input):
+                    {
+                        string[] filePaths = Directory.GetFiles(input, searchPattern: "*", SearchOption.AllDirectories);
+                        int inputsIndex = Array.IndexOf(inputs, input);
+                        if (inputsIndex > 0) {
+                            Console.WriteLine();
+                        }
+                        DisplayMessage.Message(input, "Hashing each file in the directory...");
+                        HashEachInput(filePaths, text: false, hashFunction);
+                        if (inputsIndex != inputs.Length - 1) {
+                            Console.WriteLine();
+                        }
+                        continue;
                     }
-                    DisplayMessage.Message(input, "Hashing each file in the directory...");
-                    HashEachInput(filePaths, text: false, hashFunction);
-                    if (inputsIndex != inputs.Length - 1) {
-                        Console.WriteLine();
-                    }
-                    continue;
+                    case false when !File.Exists(input):
+                        DisplayMessage.NamedError(input, "This file/directory doesn't exist.");
+                        continue;
                 }
-
-                if (!text && !File.Exists(input)) {
-                    DisplayMessage.NamedError(input, "This file/directory path doesn't exist.");
-                    continue;
-                }
-
                 using Stream stream = !text ? new FileStream(input, FileMode.Open, FileAccess.Read, FileShare.Read, GetFileStreamBufferSize(new FileInfo(input).Length), FileOptions.None) : new MemoryStream(Encoding.UTF8.GetBytes(input));
                 byte[] hash = HashingAlgorithms.GetHash(stream, hashFunction);
                 DisplayMessage.Message(input, Convert.ToHexString(hash).ToLower());

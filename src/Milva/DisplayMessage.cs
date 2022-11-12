@@ -38,8 +38,7 @@ public static class DisplayMessage
 
     public static void About()
     {
-        string version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(fieldCount: 3);
-        Console.WriteLine($"Milva v{version}");
+        Console.WriteLine($"Milva v{Assembly.GetExecutingAssembly().GetName().Version?.ToString(fieldCount: 3)}");
         Console.WriteLine("Copyright (C) 2020-2022 Samuel Lucas");
         Console.WriteLine("License GPLv3+: GNU GPL version 3 or later <https://www.gnu.org/licenses/gpl-3.0.html>.");
         Console.WriteLine("This is free software: you are free to change and redistribute it.");

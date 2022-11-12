@@ -28,18 +28,16 @@ namespace Milva;
 
 public static class HashingAlgorithms
 {
-    private const int BufferSize = 65536;
-    
     public static byte[] GetHash(Stream stream, HashFunction hashFunction)
     {
         return hashFunction switch
         {
+            HashFunction.BLAKE3 => GetBLAKE3(stream),
             HashFunction.SHAKE256 => GetBouncyCastleHash(stream, new ShakeDigest(256), 64),
             HashFunction.SHAKE128 => GetBouncyCastleHash(stream, new ShakeDigest(128), 32),
             HashFunction.SHA3_512 => GetBouncyCastleHash(stream, new Sha3Digest(512), 64),
             HashFunction.SHA3_384 => GetBouncyCastleHash(stream, new Sha3Digest(384), 48),
             HashFunction.SHA3_256 => GetBouncyCastleHash(stream, new Sha3Digest(256), 32),
-            HashFunction.BLAKE3 => GetBLAKE3(stream),
             HashFunction.BLAKE2b512 => GetBLAKE2b(stream, 64),
             HashFunction.BLAKE2b384 => GetBLAKE2b(stream, 48),
             HashFunction.BLAKE2b256 => GetBLAKE2b(stream, 32),
@@ -62,10 +60,21 @@ public static class HashingAlgorithms
         };
     }
     
+    private static int GetBufferSize(long streamLength)
+    {
+        return streamLength switch
+        {
+            < 16384 => 4096,
+            < 32768 => 16384,
+            < 65536 => 32768,
+            >= 65536 => 65536
+        };
+    }
+    
     private static byte[] GetBouncyCastleHash(Stream stream, IDigest digest, int hashSize)
     {
         int bytesRead;
-        var buffer = new byte[BufferSize];
+        var buffer = new byte[GetBufferSize(stream.Length)];
         while ((bytesRead = stream.Read(buffer)) > 0) {
             digest.BlockUpdate(buffer, inOff: 0, bytesRead);
         }
@@ -77,9 +86,8 @@ public static class HashingAlgorithms
     private static byte[] GetBLAKE3(Stream stream)
     {
         int bytesRead;
-        var buffer = new byte[BufferSize];
-        using var backendStream = new MemoryStream();
-        using var blake3 = new Blake3Stream(backendStream);
+        var buffer = new byte[GetBufferSize(stream.Length)];
+        using var blake3 = new Blake3Stream(new MemoryStream());
         while ((bytesRead = stream.Read(buffer)) > 0) {
             blake3.Write(buffer, offset: 0, bytesRead);
         }
@@ -92,7 +100,7 @@ public static class HashingAlgorithms
         int bytesRead;
         var ctx = new crypto_blake2b_ctx();
         crypto_blake2b_general_init(ref ctx, hashSize, IntPtr.Zero, key_size: 0);
-        Span<byte> buffer = new byte[BufferSize];
+        Span<byte> buffer = new byte[GetBufferSize(stream.Length)];
         while ((bytesRead = stream.Read(buffer)) > 0) {
             crypto_blake2b_update(ref ctx, buffer[..bytesRead]);
         }
