@@ -32,7 +32,7 @@ public static class HashingAlgorithms
     {
         return hashFunction switch
         {
-            HashFunction.BLAKE3 => GetBLAKE3(stream),
+            HashFunction.BLAKE3 => GetBLAKE3(stream, 32),
             HashFunction.SHAKE256 => GetBouncyCastleHash(stream, new ShakeDigest(256), 64),
             HashFunction.SHAKE128 => GetBouncyCastleHash(stream, new ShakeDigest(128), 32),
             HashFunction.SHA3_512 => GetBouncyCastleHash(stream, new Sha3Digest(512), 64),
@@ -83,16 +83,17 @@ public static class HashingAlgorithms
         return hash;
     }
 
-    private static byte[] GetBLAKE3(Stream stream)
+    private static byte[] GetBLAKE3(Stream stream, int hashSize)
     {
         int bytesRead;
-        var buffer = new byte[GetBufferSize(stream.Length)];
-        using var blake3 = new Blake3Stream(new MemoryStream());
+        Span<byte> buffer = new byte[GetBufferSize(stream.Length)];
+        using var blake3 = Hasher.New();
         while ((bytesRead = stream.Read(buffer)) > 0) {
-            blake3.Write(buffer, offset: 0, bytesRead);
+            blake3.UpdateWithJoin(buffer[..bytesRead]);
         }
-        var hash = blake3.ComputeHash();
-        return hash.AsSpanUnsafe().ToArray();
+        var hash = new byte[hashSize];
+        blake3.Finalize(hash);
+        return hash;
     }
 
     private static byte[] GetBLAKE2b(Stream stream, int hashSize)
