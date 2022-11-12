@@ -11,7 +11,7 @@
     <Version>1.5.0</Version>
     <Authors>Samuel Lucas</Authors>
     <Product>Milva</Product>
-    <AssemblyTitle>A simple, cross-platform command line tool for hashing files and text.</AssemblyTitle>
+    <Description>A simple, cross-platform command line tool for hashing files and text.</Description>
     <Copyright>Copyright © 2020-2022 Samuel Lucas</Copyright>
     <PackageProjectUrl>https://github.com/samuel-lucas6/Milva</PackageProjectUrl>
     <RepositoryUrl>https://github.com/samuel-lucas6/Milva</RepositoryUrl>
