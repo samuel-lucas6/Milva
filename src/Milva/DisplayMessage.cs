@@ -32,10 +32,12 @@ public static class DisplayMessage
         Console.WriteLine($"Error: {message}");
     }
     
-    public static void NamedError(string input, string message) => Error($"{Path.GetFileName(input)} - {message}");
+    public static void NamedError(string input, string message) => Error($"{Path.GetFileName(TrimEndDirectoryChars(input))} - {message}");
 
-    public static void Message(string input, string message) => Console.WriteLine($"{Path.GetFileName(input)}: {message}");
+    public static void Message(string input, string message) => Console.WriteLine($"{Path.GetFileName(TrimEndDirectoryChars(input))}: {message}");
 
+    private static string TrimEndDirectoryChars(string input) => input.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar, Path.VolumeSeparatorChar);
+    
     public static void About()
     {
         Console.WriteLine($"Milva v{Assembly.GetExecutingAssembly().GetName().Version?.ToString(fieldCount: 3)}");
