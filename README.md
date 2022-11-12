@@ -4,7 +4,7 @@
 
 A simple, cross-platform command line tool for hashing files and text.
 
-![milva](https://user-images.githubusercontent.com/63159663/162065739-1ba96ed0-30af-4f85-a68b-64266d191f70.gif)
+![milva](https://user-images.githubusercontent.com/63159663/201488103-111d3746-dd78-41a9-b822-265cfcb57620.gif)
 
 ## Usage
 
